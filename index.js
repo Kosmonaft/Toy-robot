@@ -24,6 +24,7 @@ function main() {
 
 function askUser() {
     inquirer.prompt(movementPrompt).then(answer => {
+        
         if (answer.robotMovement.toLowerCase() !== 'exit') {
             if (!appData.appInit && answer.robotMovement.toLowerCase().indexOf('place') === -1) {
                 console.log('The first command has to be PLACE X,Y,Z')
@@ -57,8 +58,8 @@ function verifyInput(answer) {
 function placeRobot(answer) {
     let robotCordinates = verifyPlaceCommand(answer);
     if (robotCordinates !== false) {
-        
-        if(!appData.appInit){
+
+        if (!appData.appInit) {
             appData.appInit = true;
         }
 
@@ -89,14 +90,14 @@ function verifyPlaceCommand(answer) {
 
 function rotateRobot(direction) {
     let changeTo = 1;
-    if(direction.toLowerCase() === 'left'){
+    if (direction.toLowerCase() === 'left') {
         changeTo = -1;
     }
     let currentFacingPosition = appData.directions.indexOf(appData.currentPosition[2].toUpperCase());
     let newPosition = currentFacingPosition + changeTo;
-    if(newPosition < 0) {
-        newPosition = appData.directions.length - 1 ;
-    } else if( newPosition > appData.directions.length - 1){
+    if (newPosition < 0) {
+        newPosition = appData.directions.length - 1;
+    } else if (newPosition > appData.directions.length - 1) {
         newPosition = 0;
     }
     appData.currentPosition[2] = appData.directions[newPosition];
@@ -104,12 +105,17 @@ function rotateRobot(direction) {
 }
 
 function moveRobot() {
-    if (a == 'a') { // can move
-
-    } else { // else return error
-
+    let currentDirectionIndex = appData.directions.indexOf(appData.currentPosition[2].toUpperCase());
+    let moveRobotTo = (currentDirectionIndex <= 1) ? 1 : -1;
+    let moveDirection = (currentDirectionIndex % 2 == 0) ? 'lengthY' : 'lengthX';
+    
+    let newPosition = (moveDirection == 'lengthY') ? Number(appData.currentPosition[1]) : Number(appData.currentPosition[0]);
+    newPosition += Number(moveRobotTo);
+    if (newPosition >= appData[moveDirection] || newPosition < 0) { 
+        console.log('Position out of the table');
+    } else { 
+        (moveDirection == 'lengthY') ? appData.currentPosition[1] = newPosition : appData.currentPosition[0] = newPosition;
     }
-    console.log('moveRobot');
     askUser();
 }
 
@@ -117,7 +123,7 @@ function promptPosition() {
     console.log('****** ROBOT POSITION ******');
     console.log('The ROBOT position is: ' + appData.currentPosition.join(',').toUpperCase());
     console.log('****************************');
-    askUser();
+   // askUser();
 }
 
 
