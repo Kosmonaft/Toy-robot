@@ -8,6 +8,7 @@ let appData = {
     lengthY: 5,
     directions: ['NORTH', 'EAST', 'SOUTH', 'WEST'],
     appInit: false,
+    currentPosition: [null, null, null]
 }
 
 var movementPrompt = {
@@ -54,15 +55,14 @@ function verifyInput(answer) {
 }
 
 function placeRobot(answer) {
-    console.log('placeRobot');
     let robotCordinates = verifyPlaceCommand(answer);
     if (robotCordinates !== false) {
-        // robotCordinates[0] = x
-        // robotCordinates[1] = y
-        // robotCordinates[2] = f
+        
         if(!appData.appInit){
             appData.appInit = true;
         }
+
+        appData.currentPosition = [robotCordinates[0], robotCordinates[1], robotCordinates[3]];
     }
     askUser();
 }
