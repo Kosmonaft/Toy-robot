@@ -105,7 +105,7 @@ function moveRobot() {
 
 function promptPosition() {
     console.log('****** ROBOT POSITION ******');
-    console.log('Return robot position');
+    console.log('The ROBOT position is: ' + appData.currentPosition.join(',').toUpperCase());
     console.log('****************************');
     askUser();
 }
