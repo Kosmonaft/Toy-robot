@@ -62,13 +62,13 @@ function placeRobot(answer) {
             appData.appInit = true;
         }
 
-        appData.currentPosition = [robotCordinates[0], robotCordinates[1], robotCordinates[3]];
+        appData.currentPosition = [robotCordinates[0], robotCordinates[1], robotCordinates[2]];
     }
     askUser();
 }
 
 function verifyPlaceCommand(answer) {
-    let answerParts = (answer.indexOf(',') !== -1) ? answer.split(',') : answer.split(' ');
+    let answerParts = answer.trim().split(/(?:\s+|,\s*)/i);
 
     if (answerParts.length !== 4) {
         console.log('Unvalid Place command. Please try again');
@@ -84,7 +84,7 @@ function verifyPlaceCommand(answer) {
         return false;
     }
 
-    return answerParts.splice(0, 1);
+    return answerParts.splice(1);
 }
 
 function rotateRobot(direction) {
