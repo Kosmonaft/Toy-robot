@@ -3,10 +3,11 @@
 'use strict';
 var inquirer = require('inquirer');
 
-let configData = {
+let appData = {
     lengthX: 5,
     lengthY: 5,
     directions: ['NORTH', 'SOUTH', 'EAST', 'WEST'],
+    appInit: false,
 }
 
 var movementPrompt = {
@@ -23,7 +24,12 @@ function main() {
 function askUser() {
     inquirer.prompt(movementPrompt).then(answer => {
         if (answer.robotMovement.toLowerCase() !== 'exit') {
-            verifyInput(answer.robotMovement);
+            if (!appData.appInit && answer.robotMovement.toLowerCase().indexOf('place') === -1) {
+                console.log('The first command has to be PLACE X,Y,Z')
+                askUser();
+            } else {
+                verifyInput(answer.robotMovement);
+            }
         } else {
             console.log('See you later!')
         }
@@ -50,16 +56,19 @@ function verifyInput(answer) {
 function placeRobot(answer) {
     console.log('placeRobot');
     let robotCordinates = verifyPlaceCommand(answer);
-    if(robotCordinates !== false){
+    if (robotCordinates !== false) {
         // robotCordinates[0] = x
         // robotCordinates[1] = y
         // robotCordinates[2] = f
+        if(!appData.appInit){
+            appData.appInit = true;
+        }
     }
     askUser();
 }
 
 function verifyPlaceCommand(answer) {
-    let answerParts = (answer.indexOf(',') !== -1 ) ? answer.split(',') :  answer.split(' ');
+    let answerParts = (answer.indexOf(',') !== -1) ? answer.split(',') : answer.split(' ');
 
     if (answerParts.length !== 4) {
         console.log('Unvalid Place command. Please try again');
@@ -67,15 +76,15 @@ function verifyPlaceCommand(answer) {
     } else if (isNaN(Number(answerParts[1])) || isNaN(Number(answerParts[2]))) {
         console.log('Invalid position attributes. Please try again');
         return false;
-    } else if ((Number(answerParts[1]) > configData.width - 1) || (Number(answerParts[2]) > configData.height - 1)) {
+    } else if ((Number(answerParts[1]) > appData.lengthX - 1) || (Number(answerParts[2]) > appData.lengthY - 1)) {
         console.log('Position out of the table');
         return false;
-    } else if (configData.directions.indexOf(answerParts[3].toUpperCase()) === -1) {
+    } else if (appData.directions.indexOf(answerParts[3].toUpperCase()) === -1) {
         console.log('Unknown direction. Please try again');
         return false;
     }
-    
-    return answerParts.splice(0,1);
+
+    return answerParts.splice(0, 1);
 }
 
 function rotateRobot(direction) {
