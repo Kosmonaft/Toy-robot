@@ -41,7 +41,7 @@ function askUser() {
 function verifyInput(answer) {
     let lowerCaseAnswer = answer.toLowerCase();
     if (lowerCaseAnswer === 'right' || lowerCaseAnswer === 'left') {
-        rotateRobot();
+        rotateRobot(lowerCaseAnswer);
     } else if (lowerCaseAnswer === 'prompt') {
         promptPosition();
     } else if (lowerCaseAnswer === 'move') {
@@ -88,8 +88,18 @@ function verifyPlaceCommand(answer) {
 }
 
 function rotateRobot(direction) {
-    // rotate robot to left or right
-    console.log('rotateRobot');
+    let changeTo = 1;
+    if(direction.toLowerCase() === 'left'){
+        changeTo = -1;
+    }
+    let currentFacingPosition = appData.directions.indexOf(appData.currentPosition[2].toUpperCase());
+    let newPosition = currentFacingPosition + changeTo;
+    if(newPosition < 0) {
+        newPosition = appData.directions.length - 1 ;
+    } else if( newPosition > appData.directions.length - 1){
+        newPosition = 0;
+    }
+    appData.currentPosition[2] = appData.directions[newPosition];
     askUser();
 }
 
