@@ -6,7 +6,7 @@ var inquirer = require('inquirer');
 let appData = {
     lengthX: 5,
     lengthY: 5,
-    directions: ['NORTH', 'SOUTH', 'EAST', 'WEST'],
+    directions: ['NORTH', 'EAST', 'SOUTH', 'WEST'],
     appInit: false,
 }
 
