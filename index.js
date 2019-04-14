@@ -11,6 +11,20 @@ let appData = {
     currentPosition: [null, null, null]
 }
 
+let appMessages = {
+    welcome: 'This is Toy Robot Simulator',
+    exit: 'See you later!',
+    outOfTable: 'Position out of the table',
+    unknownCommand: `Sorry I did't get this. Please try again`,
+    wrongInitCommand: 'The first command has to be PLACE X,Y,Z',
+    place: {
+        wrongDirection: 'Unknown direction. Please try again',
+        invalidCommand: 'Invalid PLACE command. Please try again',
+        invalidPosition: `Invalid position attributes. X should be between 0 and ${appData.lengthX}, Y Should be between 0 and ${appData.lengthY}. Please try again`,
+        wrongPositionTypes: 'The position attributes have to be numbers'
+    }
+}
+
 var movementPrompt = {
     type: 'input',
     name: 'robotMovement',
@@ -18,7 +32,7 @@ var movementPrompt = {
 };
 
 function main() {
-    console.log('This is Toy Robot Simulator');
+    console.log(appMessages.welcome);
     askUser();
 }
 
@@ -27,13 +41,13 @@ function askUser() {
         
         if (answer.robotMovement.toLowerCase() !== 'exit') {
             if (!appData.appInit && answer.robotMovement.toLowerCase().indexOf('place') === -1) {
-                console.log('The first command has to be PLACE X,Y,Z')
+                console.log(appMessages.wrongInitCommand)
                 askUser();
             } else {
                 verifyInput(answer.robotMovement);
             }
         } else {
-            console.log('See you later!')
+            console.log(appMessages.exit)
         }
     });
 }
@@ -50,7 +64,7 @@ function verifyInput(answer) {
     } else if (lowerCaseAnswer.indexOf('place') !== -1) {
         placeRobot(answer);
     } else {
-        console.log('Sorry I did\'t get this. Please try again');
+        console.log(appMessages.unknownCommand);
         askUser();
     }
 }
@@ -72,16 +86,17 @@ function verifyPlaceCommand(answer) {
     let answerParts = answer.trim().split(/(?:\s+|,\s*)/i);
 
     if (answerParts.length !== 4) {
-        console.log('Unvalid Place command. Please try again');
+        console.log(appMessages.place.invalidCommand);
         return false;
     } else if (isNaN(Number(answerParts[1])) || isNaN(Number(answerParts[2]))) {
-        console.log('Invalid position attributes. Please try again');
+        console.log(appMessages.place.wrongPositionTypes);
         return false;
     } else if ((Number(answerParts[1]) > appData.lengthX - 1) || (Number(answerParts[2]) > appData.lengthY - 1) || (Number(answerParts[1]) < 0) || (Number(answerParts[2]) < 0 )) {
-        console.log('Position out of the table');
+        console.log(appMessages.outOfTable);
+        console.log(appMessages.place.invalidPosition)
         return false;
     } else if (appData.directions.indexOf(answerParts[3].toUpperCase()) === -1) {
-        console.log('Unknown direction. Please try again');
+        console.log(appMessages.place.wrongDirection);
         return false;
     }
 
@@ -112,7 +127,7 @@ function moveRobot() {
     let newPosition = (moveDirection == 'lengthY') ? Number(appData.currentPosition[1]) : Number(appData.currentPosition[0]);
     newPosition += Number(moveRobotTo);
     if (newPosition >= appData[moveDirection] || newPosition < 0) { 
-        console.log('Position out of the table');
+        console.log(appMessages.outOfTable);
     } else { 
         (moveDirection == 'lengthY') ? appData.currentPosition[1] = newPosition : appData.currentPosition[0] = newPosition;
     }
