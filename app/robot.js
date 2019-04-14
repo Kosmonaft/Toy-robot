@@ -10,7 +10,7 @@ let appData = {
 }
 
 let appMessages = {
-    welcome: 'This is Toy Robot Simulator',
+    welcome: `Welcome to the Toy Robot Simulator.\nTo begin you need to place the Robot on the playground - PLACE X, Y, F (it's not case sensitive)\nYou can exit on any time by typing: exit\nEnjoy!\n`,
     exit: 'See you later!',
     outOfTable: 'Position out of the table',
     unknownCommand: `Sorry I did't get this. Please try again`,
@@ -132,7 +132,7 @@ const moveRobot = () => {
 const reportPosition = () => {
     let currentPosition = appData.currentPosition;
     currentPosition[2] = appData.directions[currentPosition[2]];
-    console.log(`******** ROBOT POSITION ********\nThe position of the ROBOT is: ${currentPosition.join(',').toUpperCase()}\n********************************`);
+    console.log(`******** ROBOT POSITION ********\nThe position of the ROBOT is: ${currentPosition.join(', ').toUpperCase()}\n********************************`);
     toyRobot.askUser();
 }
 

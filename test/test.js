@@ -187,7 +187,7 @@ describe('reportPosition function test', function(){
     it('should return the position of the robot', function(){
         let westPosition = robotApp.appData.directions.indexOf('WEST');
         robotApp.appData.currentPosition = ['0', '2', westPosition];
-        let expectedPositionOutcome = `******** ROBOT POSITION ********\nThe position of the ROBOT is: 0,2,WEST\n********************************`
+        let expectedPositionOutcome = `******** ROBOT POSITION ********\nThe position of the ROBOT is: 0, 2, WEST\n********************************`
         let askUserStub = sandbox.stub(robotApp, 'askUser');
         let callTestFunction = sandbox.spy(robotApp.reportPosition());
         expect(console.log.args[0][0]).to.be.equal(expectedPositionOutcome);
