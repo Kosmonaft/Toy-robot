@@ -87,14 +87,14 @@ function verifyPlaceCommand(answer) {
     if (answerParts.length !== 4) {
         console.log(appMessages.place.invalidCommand);
         return false;
-    } else if (isNaN(Number(answerParts[1])) || isNaN(Number(answerParts[2]))) {
+    } else if (isNaN(Number(answerParts[1])) || isNaN(Number(answerParts[2]))) { // Position parameters are not numbers
         console.log(appMessages.place.wrongPositionTypes);
         return false;
-    } else if ((Number(answerParts[1]) > appData.lengthX - 1) || (Number(answerParts[2]) > appData.lengthY - 1) || (Number(answerParts[1]) < 0) || (Number(answerParts[2]) < 0 )) {
+    } else if ((Number(answerParts[1]) > appData.lengthX - 1) || (Number(answerParts[2]) > appData.lengthY - 1) || (Number(answerParts[1]) < 0) || (Number(answerParts[2]) < 0 )) {  // Position parameters are out of board range
         console.log(appMessages.outOfTable);
         console.log(appMessages.place.invalidPosition)
         return false;
-    } else if (appData.directions.indexOf(answerParts[3].toUpperCase()) === -1) {
+    } else if (appData.directions.indexOf(answerParts[3].toUpperCase()) === -1) { // Facing parameter is invalid
         console.log(appMessages.place.wrongDirection);
         return false;
     }
@@ -103,10 +103,7 @@ function verifyPlaceCommand(answer) {
 }
 
 function rotateRobot(direction) {
-    let changeTo = 1;
-    if (direction.toLowerCase() === 'left') {
-        changeTo = -1;
-    }
+    let changeTo =  (direction.toLowerCase() === 'left') ? -1 : 1;
 
     let newPosition = appData.currentPosition[2] + changeTo;
     if (newPosition < 0) {
@@ -139,7 +136,7 @@ function reportPosition() {
     console.log('****** ROBOT POSITION ******');
     console.log('The ROBOT position is: ' + currentPosition.join(',').toUpperCase());
     console.log('****************************');
-   // askUser();
+    askUser();
 }
 
 main();
