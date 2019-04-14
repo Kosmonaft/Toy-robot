@@ -139,12 +139,20 @@ describe('rotateRobot function test', function(){
         console.log.restore();
         sandbox.restore();
     })
-    it('should change the current robot position to 0', function(){
+    it('should rotate the robot and face direction 0', function(){
         robotApp.appData.currentPosition = ['1', '2', 3];
         let askUserStub = sandbox.stub(robotApp, 'askUser');
         let test = sandbox.spy(robotApp.rotateTheRobot('right'))
 
         expect(robotApp.appData.currentPosition[2]).to.be.equal(0);
+    });
+
+    it('should rotate the robot and face direction 3', function(){
+        robotApp.appData.currentPosition = ['1', '2', 0];
+        let askUserStub = sandbox.stub(robotApp, 'askUser');
+        let test = sandbox.spy(robotApp.rotateTheRobot('left'))
+
+        expect(robotApp.appData.currentPosition[2]).to.be.equal(3);
     });
 })
 
