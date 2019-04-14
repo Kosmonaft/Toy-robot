@@ -20,7 +20,7 @@ let appMessages = {
     place: {
         wrongDirection: 'Unknown direction. Please try again',
         invalidCommand: 'Invalid PLACE command. Please try again',
-        invalidPosition: `Invalid position attributes. X should be between 0 and ${appData.lengthX-1}, Y Should be between 0 and ${appData.lengthY-1}. Please try again`,
+        invalidPosition: `Invalid position attributes. X should be between 0 and ${appData.lengthX - 1}, Y Should be between 0 and ${appData.lengthY - 1}. Please try again`,
         wrongPositionTypes: 'The position attributes have to be numbers'
     }
 }
@@ -83,14 +83,16 @@ function placeRobot(answer) {
 
 function verifyPlaceCommand(answer) {
     let answerParts = answer.trim().split(/(?:\s+|,\s*)/i);
-
+    let positionX = Number(answerParts[1]);
+    let positionY = Number(answerParts[2]);
+    
     if (answerParts.length !== 4) {
         console.log(appMessages.place.invalidCommand);
         return false;
-    } else if (isNaN(Number(answerParts[1])) || isNaN(Number(answerParts[2]))) { // Position parameters are not numbers
+    } else if (isNaN(positionX) || isNaN(positionY)) { // Position parameters are not numbers
         console.log(appMessages.place.wrongPositionTypes);
         return false;
-    } else if ((Number(answerParts[1]) > appData.lengthX - 1) || (Number(answerParts[2]) > appData.lengthY - 1) || (Number(answerParts[1]) < 0) || (Number(answerParts[2]) < 0 )) {  // Position parameters are out of board range
+    } else if (positionX > appData.lengthX - 1 || positionY > appData.lengthY - 1 || positionX < 0 || positionY < 0) {  // Position parameters are out of board range
         console.log(appMessages.outOfTable);
         console.log(appMessages.place.invalidPosition)
         return false;
@@ -103,7 +105,7 @@ function verifyPlaceCommand(answer) {
 }
 
 function rotateRobot(direction) {
-    let changeTo =  (direction.toLowerCase() === 'left') ? -1 : 1;
+    let changeTo = (direction.toLowerCase() === 'left') ? -1 : 1;
 
     let newPosition = appData.currentPosition[2] + changeTo;
     if (newPosition < 0) {
@@ -119,12 +121,12 @@ function moveRobot() {
     let currentDirectionIndex = appData.currentPosition[2];
     let moveRobotTo = (currentDirectionIndex <= 1) ? 1 : -1;
     let moveDirection = (currentDirectionIndex % 2 == 0) ? 'lengthY' : 'lengthX';
-    
+
     let newPosition = (moveDirection == 'lengthY') ? Number(appData.currentPosition[1]) : Number(appData.currentPosition[0]);
     newPosition += Number(moveRobotTo);
-    if (newPosition >= appData[moveDirection] || newPosition < 0) { 
+    if (newPosition >= appData[moveDirection] || newPosition < 0) {
         console.log(appMessages.outOfTable);
-    } else { 
+    } else {
         (moveDirection == 'lengthY') ? appData.currentPosition[1] = newPosition : appData.currentPosition[0] = newPosition;
     }
     askUser();
