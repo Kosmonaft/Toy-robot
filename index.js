@@ -63,7 +63,7 @@ function placeRobot(answer) {
             appData.appInit = true;
         }
 
-        appData.currentPosition = [robotCordinates[0], robotCordinates[1], robotCordinates[2]];
+        appData.currentPosition = [robotCordinates[0], robotCordinates[1], appData.directions.indexOf(robotCordinates[2].toUpperCase())];
     }
     askUser();
 }
@@ -93,8 +93,8 @@ function rotateRobot(direction) {
     if (direction.toLowerCase() === 'left') {
         changeTo = -1;
     }
-    let currentFacingPosition = appData.directions.indexOf(appData.currentPosition[2].toUpperCase());
-    let newPosition = currentFacingPosition + changeTo;
+
+    let newPosition = appData.currentPosition[2] + changeTo;
     if (newPosition < 0) {
         newPosition = appData.directions.length - 1;
     } else if (newPosition > appData.directions.length - 1) {
@@ -105,7 +105,7 @@ function rotateRobot(direction) {
 }
 
 function moveRobot() {
-    let currentDirectionIndex = appData.directions.indexOf(appData.currentPosition[2].toUpperCase());
+    let currentDirectionIndex = appData.currentPosition[2];
     let moveRobotTo = (currentDirectionIndex <= 1) ? 1 : -1;
     let moveDirection = (currentDirectionIndex % 2 == 0) ? 'lengthY' : 'lengthX';
     
@@ -120,8 +120,10 @@ function moveRobot() {
 }
 
 function promptPosition() {
+    let currentPosition = appData.currentPosition;
+    currentPosition[2] = appData.directions[currentPosition[2]];
     console.log('****** ROBOT POSITION ******');
-    console.log('The ROBOT position is: ' + appData.currentPosition.join(',').toUpperCase());
+    console.log('The ROBOT position is: ' + currentPosition.join(',').toUpperCase());
     console.log('****************************');
    // askUser();
 }
