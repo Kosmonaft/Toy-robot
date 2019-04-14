@@ -1,17 +1,9 @@
-var assert = require('assert');
-var expect = require('chai').expect;
-var sinon = require('sinon');
-var robotApp = require('../app/robot');
-var sandbox = require('sinon').createSandbox();
-/*
-describe('Robot test', function () {
-    describe('Main', function () {
-        it('should return false with wrong position', function () {
-            expect(robotApp.verifyPlaceCommand('PLACE 3')).to.be.false;
-        })
-    })
-})
-*/
+let assert = require('assert');
+let expect = require('chai').expect;
+let sinon = require('sinon');
+let robotApp = require('../app/robot');
+let sandbox = require('sinon').createSandbox();
+
 describe('verifyInput function test', function () {
     beforeEach(() => {
         sinon.spy(console, 'log')

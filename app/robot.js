@@ -35,7 +35,7 @@ const main = () => {
 }
 
 const askUser = () => {
-    inquirer.prompt(movementPrompt).then(answer => {
+    return inquirer.prompt(movementPrompt).then(answer => {
         if (answer.robotMovement.toLowerCase() !== 'exit') {
             if (!appData.appInit && answer.robotMovement.toLowerCase().indexOf('place') === -1) {
                 console.log(appMessages.wrongInitCommand)
@@ -137,6 +137,6 @@ const reportPosition = () => {
 }
 
 const toyRobot = {
-    main, askUser, verifyInput, placeRobot, verifyPlaceCommand, rotateTheRobot, moveRobot, reportPosition, appMessages, appData
+    main, askUser, verifyInput, placeRobot, verifyPlaceCommand, rotateTheRobot, moveRobot, reportPosition, appMessages, appData, 
 }
 module.exports = toyRobot;
