@@ -77,7 +77,7 @@ function verifyPlaceCommand(answer) {
     } else if (isNaN(Number(answerParts[1])) || isNaN(Number(answerParts[2]))) {
         console.log('Invalid position attributes. Please try again');
         return false;
-    } else if ((Number(answerParts[1]) > appData.lengthX - 1) || (Number(answerParts[2]) > appData.lengthY - 1)) {
+    } else if ((Number(answerParts[1]) > appData.lengthX - 1) || (Number(answerParts[2]) > appData.lengthY - 1) || (Number(answerParts[1]) < 0) || (Number(answerParts[2]) < 0 )) {
         console.log('Position out of the table');
         return false;
     } else if (appData.directions.indexOf(answerParts[3].toUpperCase()) === -1) {
