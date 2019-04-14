@@ -20,7 +20,7 @@ let appMessages = {
     place: {
         wrongDirection: 'Unknown direction. Please try again',
         invalidCommand: 'Invalid PLACE command. Please try again',
-        invalidPosition: `Invalid position attributes. X should be between 0 and ${appData.lengthX}, Y Should be between 0 and ${appData.lengthY}. Please try again`,
+        invalidPosition: `Invalid position attributes. X should be between 0 and ${appData.lengthX-1}, Y Should be between 0 and ${appData.lengthY-1}. Please try again`,
         wrongPositionTypes: 'The position attributes have to be numbers'
     }
 }
