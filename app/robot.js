@@ -132,7 +132,7 @@ const moveRobot = () => {
 const reportPosition = () => {
     let currentPosition = appData.currentPosition;
     currentPosition[2] = appData.directions[currentPosition[2]];
-    console.log(`******** ROBOT POSITION ********\nThe position of the ROBOT  is: ${currentPosition.join(',').toUpperCase()}\n********************************`);
+    console.log(`******** ROBOT POSITION ********\nThe position of the ROBOT is: ${currentPosition.join(',').toUpperCase()}\n********************************`);
     toyRobot.askUser();
 }
 
