@@ -140,6 +140,6 @@ const reportPosition = () => {
 }
 
 const toyRobot = {
-    main, askUser, verifyInput, placeRobot, verifyPlaceCommand, rotateRobot, moveRobot, reportPosition
+    main, askUser, verifyInput, placeRobot, verifyPlaceCommand, rotateRobot, moveRobot, reportPosition, appMessages
 }
 module.exports = toyRobot;

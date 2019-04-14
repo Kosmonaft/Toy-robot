@@ -21,13 +21,60 @@ describe('Robot test', function () {
 })
 */
 describe('verifyInput function test', function () {
-    it('should trigger rotate method', function () {
-        
-        let direction = 'Left'
-        var rotateRobotStub = sinon.stub(robotApp, 'rotateRobot');
-
-        robotApp.verifyInput(direction);
-    
-        assert(rotateRobotStub.called)
+    beforeEach(() => {
+        sinon.spy(console, 'log')
     })
+
+    afterEach(() => {
+        console.log.restore()
+    })
+
+
+    it('should trigger the rotate method', function () {
+        let consoleCommand = 'Left';
+        let rotateRobotStub = sinon.stub(robotApp, 'rotateRobot');
+        robotApp.verifyInput(consoleCommand);
+
+        assert(rotateRobotStub.called)
+    });
+
+    it('should trigger the report method', function () {
+        let consoleCommand = 'report';
+        let reportStub = sinon.stub(robotApp, 'reportPosition');
+
+        robotApp.verifyInput(consoleCommand);
+
+        assert(reportStub.called)
+    });
+
+    it('should trigger the move method', function () {
+        let consoleCommand = 'MOVE';
+        let moveRobotStub = sinon.stub(robotApp, 'moveRobot');
+
+        robotApp.verifyInput(consoleCommand);
+
+        assert(moveRobotStub.called)
+    });
+
+    it('should trigger the place method', function () {
+        let consoleCommand = 'Place 2,3,North';
+        let placeRobotStub = sinon.stub(robotApp, 'placeRobot');
+
+        robotApp.verifyInput(consoleCommand);
+
+        assert(placeRobotStub.called)
+    });
+
+
+    it('should ignore unknown methods', function () {
+        let consoleCommand = 'Dance';
+
+        let askUserStub = sinon.stub(robotApp, 'askUser');
+        robotApp.verifyInput(consoleCommand);
+
+        expect(console.log.calledOnce).to.be.true;
+        expect(console.log.args[0][0]).to.equal(robotApp.appMessages.unknownCommand);
+        assert(askUserStub.called)
+    });
+
 })
