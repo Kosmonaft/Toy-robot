@@ -111,7 +111,7 @@ const rotateRobot = (direction) => {
     } else if (newPosition > appData.directions.length - 1) {
         newPosition = 0;
     }
-    appData.currentPosition[2] = appData.directions[newPosition];
+    appData.currentPosition[2] = newPosition;
     toyRobot.askUser();
 }
 
