@@ -163,7 +163,6 @@ describe('MoveRobot function test', function(){
         let askUserStub = sandbox.stub(robotApp, 'askUser');
         let test = sandbox.spy(robotApp.moveRobot())
         expect(console.log.args[0][0]).to.be.equal(robotApp.appMessages.outOfTable);
-        //expect(robotApp.appData.currentPosition[2]).to.be.equal(0);
     });
     it('should move the robot forward', function(){
         let westPosition = robotApp.appData.directions.indexOf('WEST');
@@ -171,6 +170,27 @@ describe('MoveRobot function test', function(){
         let askUserStub = sandbox.stub(robotApp, 'askUser');
         let test = sandbox.spy(robotApp.moveRobot())
         expect(robotApp.appData.currentPosition[0]).to.be.equal(0);
+    });
+
+})
+
+describe('reportPosition function test', function(){
+    beforeEach(() => {
+        sinon.spy(console, 'log')
+    })
+
+    afterEach(() => {
+        console.log.restore();
+        sandbox.restore();
+    });
+
+    it('should return the position of the robot', function(){
+        let westPosition = robotApp.appData.directions.indexOf('WEST');
+        robotApp.appData.currentPosition = ['0', '2', westPosition];
+        let expectedPositionOutcome = `******** ROBOT POSITION ********\nThe position of the ROBOT is: 0,2,WEST\n********************************`
+        let askUserStub = sandbox.stub(robotApp, 'askUser');
+        let test = sandbox.spy(robotApp.reportPosition());
+        expect(console.log.args[0][0]).to.be.equal(expectedPositionOutcome);
     });
 
 })
