@@ -1,6 +1,6 @@
 var assert = require('assert');
 var expect = require('chai').expect;
-var robotApp = require('../index.js');
+var robotApp = require('../app/robot.js');
 
 describe('Array', function () {
     describe('#indexOf()', function () {
