@@ -38,7 +38,6 @@ function main() {
 
 function askUser() {
     inquirer.prompt(movementPrompt).then(answer => {
-        
         if (answer.robotMovement.toLowerCase() !== 'exit') {
             if (!appData.appInit && answer.robotMovement.toLowerCase().indexOf('place') === -1) {
                 console.log(appMessages.wrongInitCommand)
@@ -57,8 +56,8 @@ function verifyInput(answer) {
     let lowerCaseAnswer = answer.toLowerCase();
     if (lowerCaseAnswer === 'right' || lowerCaseAnswer === 'left') {
         rotateRobot(lowerCaseAnswer);
-    } else if (lowerCaseAnswer === 'prompt') {
-        promptPosition();
+    } else if (lowerCaseAnswer === 'report') {
+        reportPosition();
     } else if (lowerCaseAnswer === 'move') {
         moveRobot();
     } else if (lowerCaseAnswer.indexOf('place') !== -1) {
@@ -134,7 +133,7 @@ function moveRobot() {
     askUser();
 }
 
-function promptPosition() {
+function reportPosition() {
     let currentPosition = appData.currentPosition;
     currentPosition[2] = appData.directions[currentPosition[2]];
     console.log('****** ROBOT POSITION ******');
@@ -142,7 +141,5 @@ function promptPosition() {
     console.log('****************************');
    // askUser();
 }
-
-
 
 main();
