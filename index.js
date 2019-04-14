@@ -81,11 +81,11 @@ function placeRobot(answer) {
     askUser();
 }
 
-function verifyPlaceCommand(answer) {
+exports.verifyPlaceCommand = function (answer) {
     let answerParts = answer.trim().split(/(?:\s+|,\s*)/i);
     let positionX = Number(answerParts[1]);
     let positionY = Number(answerParts[2]);
-    
+
     if (answerParts.length !== 4) {
         console.log(appMessages.place.invalidCommand);
         return false;
@@ -141,4 +141,4 @@ function reportPosition() {
     askUser();
 }
 
-main();
+//main();

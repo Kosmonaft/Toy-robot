@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "nyc mocha",
     "start": "node index.js"
   },
   "repository": {
@@ -19,5 +19,10 @@
   "homepage": "https://github.com/Kosmonaft/Toy-robot#readme",
   "dependencies": {
     "inquirer": "^6.2.2"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.1.3",
+    "nyc": "^13.3.0"
   }
 }
