@@ -31,7 +31,7 @@ const movementPrompt = {
 
 const main = () => {
     console.log(appMessages.welcome);
-    askUser();
+    toyRobot.askUser();
 }
 
 const askUser = () => {
@@ -39,9 +39,9 @@ const askUser = () => {
         if (answer.robotMovement.toLowerCase() !== 'exit') {
             if (!appData.appInit && answer.robotMovement.toLowerCase().indexOf('place') === -1) {
                 console.log(appMessages.wrongInitCommand)
-                askUser();
+                toyRobot.askUser();
             } else {
-                verifyInput(answer.robotMovement);
+                toyRobot.verifyInput(answer.robotMovement);
             }
         } else {
             console.log(appMessages.exit)
@@ -53,21 +53,21 @@ const askUser = () => {
 const verifyInput = (answer) => {
     let lowerCaseAnswer = answer.toLowerCase();
     if (lowerCaseAnswer === 'right' || lowerCaseAnswer === 'left') {
-        rotateRobot(lowerCaseAnswer);
+        toyRobot.rotateRobot(lowerCaseAnswer);
     } else if (lowerCaseAnswer === 'report') {
-        reportPosition();
+        toyRobot.reportPosition();
     } else if (lowerCaseAnswer === 'move') {
-        moveRobot();
+        toyRobot.moveRobot();
     } else if (lowerCaseAnswer.indexOf('place') !== -1) {
-        placeRobot(answer);
+        toyRobot.placeRobot(answer);
     } else {
         console.log(appMessages.unknownCommand);
-        askUser();
+        toyRobot.askUser();
     }
 }
 
 const placeRobot = (answer) => {
-    let robotCordinates = verifyPlaceCommand(answer);
+    let robotCordinates = toyRobot.verifyPlaceCommand(answer);
     if (robotCordinates !== false) {
 
         if (!appData.appInit) {
@@ -76,7 +76,7 @@ const placeRobot = (answer) => {
 
         appData.currentPosition = [robotCordinates[0], robotCordinates[1], appData.directions.indexOf(robotCordinates[2].toUpperCase())];
     }
-    askUser();
+    toyRobot.askUser();
 }
 
 const verifyPlaceCommand = (answer) => {
@@ -112,7 +112,7 @@ const rotateRobot = (direction) => {
         newPosition = 0;
     }
     appData.currentPosition[2] = appData.directions[newPosition];
-    askUser();
+    toyRobot.askUser();
 }
 
 const moveRobot = () => {
@@ -127,7 +127,7 @@ const moveRobot = () => {
     } else {
         (moveDirection == 'lengthY') ? appData.currentPosition[1] = newPosition : appData.currentPosition[0] = newPosition;
     }
-    askUser();
+    toyRobot.askUser();
 }
 
 const reportPosition = () => {
@@ -136,7 +136,10 @@ const reportPosition = () => {
     console.log('****** ROBOT POSITION ******');
     console.log('The ROBOT position is: ' + currentPosition.join(',').toUpperCase());
     console.log('****************************');
-    askUser();
+    toyRobot.askUser();
 }
 
-module.exports = { main, askUser, verifyInput, placeRobot, verifyPlaceCommand, rotateRobot, moveRobot, reportPosition };
+const toyRobot = {
+    main, askUser, verifyInput, placeRobot, verifyPlaceCommand, rotateRobot, moveRobot, reportPosition
+}
+module.exports = toyRobot;
