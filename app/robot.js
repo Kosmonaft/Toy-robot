@@ -53,7 +53,7 @@ const askUser = () => {
 const verifyInput = (answer) => {
     let lowerCaseAnswer = answer.toLowerCase();
     if (lowerCaseAnswer === 'right' || lowerCaseAnswer === 'left') {
-        toyRobot.rotateRobot(lowerCaseAnswer);
+        toyRobot.rotateTheRobot(lowerCaseAnswer);
     } else if (lowerCaseAnswer === 'report') {
         toyRobot.reportPosition();
     } else if (lowerCaseAnswer === 'move') {
@@ -102,9 +102,8 @@ const verifyPlaceCommand = (answer) => {
     return answerParts.splice(1);
 }
 
-const rotateRobot = (direction) => {
+const rotateTheRobot = (direction) => {
     let changeTo = (direction.toLowerCase() === 'left') ? -1 : 1;
-
     let newPosition = appData.currentPosition[2] + changeTo;
     if (newPosition < 0) {
         newPosition = appData.directions.length - 1;
@@ -140,6 +139,6 @@ const reportPosition = () => {
 }
 
 const toyRobot = {
-    main, askUser, verifyInput, placeRobot, verifyPlaceCommand, rotateRobot, moveRobot, reportPosition, appMessages
+    main, askUser, verifyInput, placeRobot, verifyPlaceCommand, rotateTheRobot, moveRobot, reportPosition, appMessages, appData
 }
 module.exports = toyRobot;

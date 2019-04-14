@@ -2,15 +2,7 @@ var assert = require('assert');
 var expect = require('chai').expect;
 var sinon = require('sinon');
 var robotApp = require('../app/robot');
-
-
-describe('Array', function () {
-    describe('#indexOf()', function () {
-        it('should return -1 when the value is not present', function () {
-            assert.equal([1, 2, 3].indexOf(4), -1);
-        });
-    });
-});
+var sandbox = require('sinon').createSandbox();
 /*
 describe('Robot test', function () {
     describe('Main', function () {
@@ -27,12 +19,13 @@ describe('verifyInput function test', function () {
 
     afterEach(() => {
         console.log.restore()
+        sandbox.restore();
     })
 
 
     it('should trigger the rotate method', function () {
         let consoleCommand = 'Left';
-        let rotateRobotStub = sinon.stub(robotApp, 'rotateRobot');
+        let rotateRobotStub = sandbox.stub(robotApp, 'rotateTheRobot');
         robotApp.verifyInput(consoleCommand);
 
         assert(rotateRobotStub.called)
@@ -40,7 +33,7 @@ describe('verifyInput function test', function () {
 
     it('should trigger the report method', function () {
         let consoleCommand = 'report';
-        let reportStub = sinon.stub(robotApp, 'reportPosition');
+        let reportStub = sandbox.stub(robotApp, 'reportPosition');
 
         robotApp.verifyInput(consoleCommand);
 
@@ -49,7 +42,7 @@ describe('verifyInput function test', function () {
 
     it('should trigger the move method', function () {
         let consoleCommand = 'MOVE';
-        let moveRobotStub = sinon.stub(robotApp, 'moveRobot');
+        let moveRobotStub = sandbox.stub(robotApp, 'moveRobot');
 
         robotApp.verifyInput(consoleCommand);
 
@@ -58,7 +51,7 @@ describe('verifyInput function test', function () {
 
     it('should trigger the place method', function () {
         let consoleCommand = 'Place 2,3,North';
-        let placeRobotStub = sinon.stub(robotApp, 'placeRobot');
+        let placeRobotStub = sandbox.stub(robotApp, 'placeRobot');
 
         robotApp.verifyInput(consoleCommand);
 
@@ -69,12 +62,115 @@ describe('verifyInput function test', function () {
     it('should ignore unknown methods', function () {
         let consoleCommand = 'Dance';
 
-        let askUserStub = sinon.stub(robotApp, 'askUser');
+        let askUserStub = sandbox.stub(robotApp, 'askUser');
         robotApp.verifyInput(consoleCommand);
 
         expect(console.log.calledOnce).to.be.true;
         expect(console.log.args[0][0]).to.equal(robotApp.appMessages.unknownCommand);
         assert(askUserStub.called)
+    });
+
+})
+
+describe('verifyPlaceCommand function test', function () {
+    beforeEach(() => {
+        sinon.spy(console, 'log')
+    })
+
+    afterEach(() => {
+        console.log.restore()
+    })
+
+    it('should return false and show message that the PLACE command is invalid', function () {
+        let consoleCommand = 'PLACE X, Y';
+
+        let runCommandResult = robotApp.verifyPlaceCommand(consoleCommand);
+
+        expect(runCommandResult).to.be.false;
+        expect(console.log.args[0][0]).to.equal(robotApp.appMessages.place.invalidCommand);
+    });
+
+    it('should return false and show message that the Position parameters are not numbers', function () {
+        let consoleCommand = 'PLACE X, Y, North';
+
+        let runCommandResult = robotApp.verifyPlaceCommand(consoleCommand);
+
+        expect(runCommandResult).to.be.false;
+        expect(console.log.args[0][0]).to.equal(robotApp.appMessages.place.wrongPositionTypes);
+    });
+
+    it('should return false and show messages that position out of table and the Position parameters are out of board range', function () {
+        let consoleCommand = `PLACE -1, ${robotApp.appData.lengthY +5 }, North`;
+
+        let runCommandResult = robotApp.verifyPlaceCommand(consoleCommand);
+
+        expect(runCommandResult).to.be.false;
+        expect(console.log.args[0][0]).to.equal(robotApp.appMessages.outOfTable);
+        expect(console.log.args[1][0]).to.equal(robotApp.appMessages.place.invalidPosition);
+    });
+
+    it('should return false and show messages that Facing parameter is invalid', function () {
+        let consoleCommand = `PLACE 0,0, SouthEast`;
+
+        let runCommandResult = robotApp.verifyPlaceCommand(consoleCommand);
+
+        expect(runCommandResult).to.be.false;
+        expect(console.log.args[0][0]).to.equal(robotApp.appMessages.place.wrongDirection);
+    });
+
+    it('should return Array with 3 parameters', function () {
+        let positionX = 0, positionY = 0, facing ='NORTH';
+        let consoleCommand = `PLACE ${positionX}, ${positionY}, ${facing}`;
+
+        let runCommandResult = robotApp.verifyPlaceCommand(consoleCommand);
+
+        expect(runCommandResult).to.be.an('array').to.have.length(3);
+
+    });
+    
+})
+
+describe('rotateRobot function test', function(){
+    beforeEach(() => {
+        sinon.spy(console, 'log')
+    })
+
+    afterEach(() => {
+        console.log.restore();
+        sandbox.restore();
+    })
+    it('should change the current robot position to 0', function(){
+        robotApp.appData.currentPosition = ['1', '2', 3];
+        let askUserStub = sandbox.stub(robotApp, 'askUser');
+        let test = sandbox.spy(robotApp.rotateTheRobot('right'))
+
+        expect(robotApp.appData.currentPosition[2]).to.be.equal(0);
+    });
+})
+
+describe('MoveRobot function test', function(){
+    beforeEach(() => {
+        sinon.spy(console, 'log')
+    })
+
+    afterEach(() => {
+        console.log.restore();
+        sandbox.restore();
+    })
+    it('should prevent moving and return message that will be out of table', function(){
+        let westPosition = robotApp.appData.directions.indexOf('WEST');
+        robotApp.appData.currentPosition = [0, '2', westPosition];
+        let askUserStub = sandbox.stub(robotApp, 'askUser');
+        let test = sandbox.spy(robotApp.moveRobot())
+        expect(console.log.args[0][0]).to.be.equal(robotApp.appMessages.outOfTable);
+        //expect(robotApp.appData.currentPosition[2]).to.be.equal(0);
+    });
+    it('should move the robot forward', function(){
+        let westPosition = robotApp.appData.directions.indexOf('WEST');
+        robotApp.appData.currentPosition = [1, '2', westPosition];
+        let askUserStub = sandbox.stub(robotApp, 'askUser');
+        let test = sandbox.spy(robotApp.moveRobot())
+        expect(robotApp.appData.currentPosition[0]).to.be.equal(0);
     });
 
 })
