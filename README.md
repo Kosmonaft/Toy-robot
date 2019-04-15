@@ -22,6 +22,9 @@ The tests are written in mocha and an additional libarary called instanbul (nyc)
 
 ## Test data
 
+The expected output is based on re-run the app each time.
+If you didn't stop (type: exit) and run again the app, EXAMPLE 4 and EXAMPLE 5 will have different output
+
 Example 1
 ------------
 
